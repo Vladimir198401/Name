@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Ajax pavyzdys</title>
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<link rel="stylesheet" href="jqueryui.css">	
+		<link rel="stylesheet" href="main.css">		
+		<style>
+			.anuliuotas, .sanuliuotas {
+				background-color: lightblue;
+			}
+			.ivykdytas, .sivykdytas {
+				background-color: lightgreen;
+			}
+			table {
+				border-collapse: colapse;
+			}
+			th {
+				background-color: lightgreen;			
+			}
+			th, td {
+				padding: 6px;
+				border: 1px solid grey;
+			}
+			.ch_lab {
+				display: inline-block ! important;
+			}
+		</style> 
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script type="text/javascript">
+		$(document).ready( function() {
+		
+			$( '#siulyti' ).click ( function() {
+		
+				console.log( "ready!" );		
+				alert ( 'jquery ok' );
+			});
+			
+		
+			$.ajax( '/ajax/lst-kelionesx',   // request url
+			    {
+				success: function (data, status, xhr ) {// success callback function
+				
+					alert( JSON.stringify ( data ) );
+				
+					keliones = data;
+					
+					str_lst_keliones = '<table>';
+					str_lst_keliones += '<tr><th>Pavadinimas</th><th>Kaina</th><th>Trukme_val</th><th>Poilsines</th><th>Pazintines</th><th>Viskas_isk</th></tr>';
+					i = 0;
+					
+					while ( i < keliones.length ) {
+					
+						str_lst_keliones += '<tr>';
+						str_lst_keliones += '<td class="pav" data-id="' + keliones[ i ].id + '" data-apras="' + keliones[ i ].apras + '">' + keliones[ i ].pav + '</td>';
+						str_lst_keliones += '<td>' + keliones[ i ].kaina + '</td>';
+						str_lst_keliones += '<td>' + keliones[ i ].trukmeVal + ' </td>';						
+						if(keliones[ i ].flag_poilsines == 1){
+							str_lst_keliones += '<td>' + '<div id ="poilsines">&check;</div>' + '</td>';
+						} else {
+							str_lst_keliones += '<td>' + '<div id="poilsines">&cross;</div>' + '</td>';
+						}
+						if(keliones[ i ].flag_pazintines == 1){
+							str_lst_keliones += '<td>' + '<div id="pazintines">&check;</div>' + '</td>';
+						} else {
+							str_lst_keliones += '<td>' + '<div id="pazintines">&cross;</div>' + '</td>';
+						}
+						if(keliones[ i ].flag_viskas_isk == 1){
+							str_lst_keliones += '<td>' + '<div id="viskas_isk">&check;</div>' + '</td>';
+						} else {
+							str_lst_keliones += '<td>' + '<div id="viskas_isk">&cross;</div>' + '</td>';
+						} 
+						str_lst_keliones += '<tr>';
+						
+						i++;
+					}
+					
+					str_lst_keliones += '</table>';
+					
+					$( '#lst_keliones' ).html ( str_lst_keliones );
+					$( ".pav" ).each ( function() {
+					
+						$( this ).on("click", function() {
+						
+							id = $(this).data("id");
+							aprasymas = $(this).data( "apras" );
+							
+							$.ajax( '/ajax/keliones-miestai?id_keliones=' + id,  // request url
+								{
+									success: function (data, status, xhr ) {// success callback function
+										
+										miestai = data;
+										y = 0;
+										var kablelis = "";
+										aprasymas += ". Miestai, kuriuos pravažiuosite kelionės metu: "
+										while ( y < miestai.length ) {
+											
+											aprasymas += kablelis + miestai[y].miestai.pav;
+											kablelis = ", ";
+											y++;
+							
+										}
+										aprasymas += ".";
+									
+										
+										$('#placiau').html(aprasymas);
+									}
+							});
+							
+							
+						});
+					});
+					// funkcijos vieta čia
+			    }
+			});
+		
+		});
+			
+	</script>
+</head>
+<body>
+	Kelionių sąrašas
+	<div id="lst_keliones">
+		
+	</div>
+	<input type="button" id="siulyti" value="pasiulyti">
+	<div id="placiau">
+
+	</div>
+</body>

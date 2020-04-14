@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Keliones</title>
+    <meta charset="utf-8">
+    		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    		<link rel="stylesheet" href="jqueryui.css">	
+		<link rel="stylesheet" href="main.css">		
+		<style>
+			.anuliuotas, .sanuliuotas {
+				background-color: lightblue;
+			}
+			.ivykdytas, .sivykdytas {
+				background-color: lightgreen;
+			}
+			table {
+				border-collapse: colapse;
+			}
+			th {
+				background-color: lightgreen;			
+			}
+			th, td {
+				padding: 6px;
+				border: 1px solid grey;
+			}
+			.ch_lab {
+				display: inline-block ! important;
+			}
+		</style>
+	    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous">
+	    </script>
+	    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>	    
+	    <script src="naujaKelione.js"></script>
+	    <script>
+		$( document ).ready ( function() {
+
+
+
+			kelionesCrud();
+		});			
+	</script>
+</head>
+<body>
+	<nav>
+		<a th:each="menu_item : ${lst_menu}" th:href="${menu_item.itemurl()}" th:text="${menu_item}"></a>
+	</nav>
+	<div id="dialog-form" title="Nauja kelione">
+		<p class="validateTips">Visi laukai privalomi</p>
+		<p id="pav_veiksmo"></p>
+		<form id="keliones_forma" method="POST">
+			<fieldset>
+				<input type="hidden" name="id" id="id" value="0">
+				
+				<label for="pav">Keliones pavadinimas</label>
+				<input type="text" name="pav" id="pav" value="" class="text ui-widget-content ui-corner-all" required>
+				<label for="apras">Keliones aprasymas</label>
+				<input type="text" name="apras" id="apras" value="" class="text ui-widget-content ui-corner-all" required>
+				<label for="kaina">Keliones kaina</label>
+				<input type="number" name="kaina" id="kaina" value="0" class="text ui-widget-content ui-corner-all" required>
+				<label for="trukmeVal">Keliones trukme</label>
+				<input type="number" name="trukmeVal" id="trukmeVal" value="0" class="text ui-widget-content ui-corner-all" required>
+				
+				<input type="checkbox" name="flagPoilsines" id="flagPoilsines" value="1">
+				<label for="flagPoilsines"> Poilsine </label><br>
+				<input type="checkbox" name="flagPazintines" id="flagPazintines" value="1">
+				<label for="flagPazintines"> Pazintine </label><br>
+				<input type="checkbox" name="flagViskasIsk" id="flagViskasIsk" value="1">
+				<label for="flagViskasIsk"> Viskas iskaiciuota </label><br>
+				
+				<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+			</fieldset>
+		</form>
+	</div>
+<div id="main">
+		<h3>Esamos keliones</h3>
+		<button id="create-kelione">Irašyti kelionę</button>
+	<div id="keliones"></div>
+</div>
+	<div id="dialog-confirm" title="Ištrinti įrašą?">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+		<p>Šis įrašas <span id="pav_keliones">
+</span> bus ištrintas ir nebus įmanoma jo atkurti. Ar tikrai norite ištrinti įrašą?</p>
+		<form id="salinimo_forma" method="POST">
+			<input type="hidden" name="id" id="id_keliones" value="0">
+			<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+		</form>
+	</div>
+</body>
+</html>

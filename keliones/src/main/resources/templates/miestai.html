@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Miestai</title>
+    <meta charset="utf-8">
+    		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    		<link rel="stylesheet" href="jqueryui.css">	
+		<link rel="stylesheet" href="main.css">		
+		<style>
+			.anuliuotas, .sanuliuotas {
+				background-color: lightblue;
+			}
+			.ivykdytas, .sivykdytas {
+				background-color: lightgreen;
+			}
+			table {
+				border-collapse: colapse;
+			}
+			th {
+				background-color: lightgreen;			
+			}
+			th, td {
+				padding: 6px;
+				border: 1px solid grey;
+			}
+			.ch_lab {
+				display: inline-block ! important;
+			}
+		</style>
+	    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous">
+	    </script>
+	    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>	    
+	    <!--<script src="crud.js"></script>-->
+	    <script src="naujasMiestas.js"></script>
+	    <script>
+		$( document ).ready ( function() {
+		
+				 miestaiCrud();
+				
+			});		
+		
+		/*$( document ).ready ( function() {
+
+			params = {
+			
+				fields: [ 'pav', 'flagPoilsines', 'flagPazintines', 'flagViskasIsk', 'flagLaisvPasir']
+				, fields_names: [ 'Miestas', 'poilsinė', 'pažintinė', 'viskas<br>įsk.', 'laisv.<br>pasir.']
+				, url : 'http://localhost:8080/ajax/lst-miestai'
+				, field_data: ''
+				, id_html_saraso: 'miestai'
+				, id_html_dialog_formos: 'miestai-dialog'
+				, dialog_size_x: 400
+				, dialog_size_y: 490
+				, title_dialog_form: 'Miestas'
+				, url_save_rec: 'http://localhost:8080/ajax/saugoti-miesta'
+				, url_delete_rec:  'http://localhost:8080/ajax/salinti-miesta'
+				, fields_edit:  [ 'pav', 'flagPoilsines', 'flagPazintines', 'flagViskasIsk', 'flagLaisvPasir' ]
+				, fields_ed_types: [ 'text', 'checkbox', 'checkbox', 'checkbox', 'checkbox' ]
+				, field_name: 'pav'
+				, details_url: [ { url: 'miestas?id=', name: 'plačiau' }, { url: 'pasiulymai?id=', name: 'pasiūlymai' } ] 								
+			}
+			
+			crud_kategoriju = new crud ( params );
+			
+			crud_kategoriju.initEmpty();
+			crud_kategoriju.refreshData();
+			
+		});	*/		
+	</script>
+</head>
+<body>
+<nav>
+	<a th:each="menu_item : ${lst_menu}" th:href="${menu_item.itemurl()}" th:text="${menu_item}"></a>
+</nav>
+<div id="dialog-form" title="Naujas miestas">
+	<p class="validateTips">Visi laukai privalomi</p>
+	<p id="pav_veiksmo"></p>
+	<form id="miestai_forma" method="POST">
+			<fieldset>
+				<input type="hidden" name="id" id="id" value="0">
+				
+				<label for="pav">Miesto pavadinimas</label>
+				<input type="text" name="pav" id="pav" value="" class="text ui-widget-content ui-corner-all" required>
+				
+				<label for="kodas_salies">Miesto salies kodas</label>
+				<input type="text" name="kodas_salies" id="kodas_salies" value="" class="text ui-widget-content ui-corner-all" required>
+				
+				<label for="apras">Miesto aprasymas</label>
+				<input type="text" name="apras" id="apras" value="" class="text ui-widget-content ui-corner-all" required>
+				
+				<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+			</fieldset>
+		</form>
+	</div>
+<div id="main">
+		<h3>Esamos keliones</h3>
+		<button id="create-miestas">Irasyti miesta</button>
+	<div id="miestai"></div>
+	</div>
+</div>
+	<div id="dialog-confirm" title="Ištrinti įrašą?">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+		<p>Šis įrašas <span id="pav_miestai">
+</span> bus ištrintas ir nebus įmanoma jo atkurti. Ar tikrai norite ištrinti įrašą?</p>
+		<form id="salinimo_forma" method="POST">
+			<input type="hidden" name="id" id="id_miestai" value="0">
+			<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+		</form>
+	</div>
+</body>
+</html>
